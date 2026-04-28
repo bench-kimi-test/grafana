@@ -3110,6 +3110,14 @@ var (
 			Owner:       grafanaAlertingSquad,
 			Expression:  "false",
 		},
+		{
+			Name:        "cujTracking",
+			Description: "Enables Critical User Journey (CUJ) tracking",
+			Stage:       FeatureStageExperimental,
+			Generate:    Generate{LegacyFrontend: true},
+			Owner:       grafanaDashboardsSquad,
+			Expression:  "false",
+		},
 		// tl;dr: name your new flag `component.featureName`, specify Go and/or React generation targets, and use with OpenFeature!
 		//
 		// Adding a new feature flag? Be sure to check out the updated docs at /contribute/feature-toggles.md#Steps-to-adding-a-feature-toggle
