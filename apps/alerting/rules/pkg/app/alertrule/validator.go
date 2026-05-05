@@ -42,14 +42,14 @@ func NewValidator(cfg config.RuntimeConfig) *simple.Validator {
 				if !ok {
 					return fmt.Errorf("old object is not of type *v0alpha1.AlertRule")
 				}
-				if cfg.ResolveRuleChainMemberships != nil {
-					memberships, err := cfg.ResolveRuleChainMemberships(ctx, []string{r.Name})
+				if cfg.ResolveRuleSequenceMemberships != nil {
+					memberships, err := cfg.ResolveRuleSequenceMemberships(ctx, []string{r.Name})
 					if err != nil {
-						return fmt.Errorf("failed to resolve chain membership for rule %q: %w", r.Name, err)
+						return fmt.Errorf("failed to resolve sequence membership for rule %q: %w", r.Name, err)
 					}
 					membership := memberships[r.Name]
 					if membership.Found {
-						return fmt.Errorf("cannot delete rule %q because it belongs to rulechain %q", r.Name, membership.ChainUID)
+						return fmt.Errorf("cannot delete rule %q because it belongs to rule sequence %q", r.Name, membership.SequenceUID)
 					}
 				}
 				return nil
@@ -93,19 +93,19 @@ func NewValidator(cfg config.RuntimeConfig) *simple.Validator {
 				}
 			}
 
-			if req.Action == resource.AdmissionActionUpdate && oldRule != nil && cfg.ResolveRuleChainMemberships != nil {
+			if req.Action == resource.AdmissionActionUpdate && oldRule != nil && cfg.ResolveRuleSequenceMemberships != nil {
 				oldFolderUID := ""
 				if oldRule.Annotations != nil {
 					oldFolderUID = oldRule.Annotations[model.FolderAnnotationKey]
 				}
 				if oldFolderUID != folderUID {
-					memberships, err := cfg.ResolveRuleChainMemberships(ctx, []string{r.Name})
+					memberships, err := cfg.ResolveRuleSequenceMemberships(ctx, []string{r.Name})
 					if err != nil {
-						return fmt.Errorf("failed to resolve chain membership for rule %q: %w", r.Name, err)
+						return fmt.Errorf("failed to resolve sequence membership for rule %q: %w", r.Name, err)
 					}
 					membership := memberships[r.Name]
 					if membership.Found {
-						return fmt.Errorf("cannot move rule %q to folder %q because it belongs to rulechain %q", r.Name, folderUID, membership.ChainUID)
+						return fmt.Errorf("cannot move rule %q to folder %q because it belongs to rule sequence %q", r.Name, folderUID, membership.SequenceUID)
 					}
 				}
 			}

@@ -2096,13 +2096,13 @@
         }
       ]
     },
-    "/apis/rules.alerting.grafana.app/v0alpha1/namespaces/{namespace}/rulechains": {
+    "/apis/rules.alerting.grafana.app/v0alpha1/namespaces/{namespace}/rulesequences": {
       "get": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "list or watch objects of kind RuleChain",
-        "operationId": "listRuleChain",
+        "description": "list or watch objects of kind RuleSequence",
+        "operationId": "listRuleSequence",
         "parameters": [
           {
             "name": "allowWatchBookmarks",
@@ -2177,6 +2177,15 @@
             }
           },
           {
+            "name": "shardSelector",
+            "in": "query",
+            "description": "shardSelector restricts the list of returned objects using a CEL-based shard selector expression. The format uses the shardRange() function combined with || (logical OR) to specify one or more hash ranges:\n\n  shardRange(object.metadata.uid, '0x0', '0x8000000000000000')\n  shardRange(object.metadata.uid, '0x0', '0x8000000000000000') || shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')\n\nField paths use CEL-style object-rooted syntax (e.g. \"object.metadata.uid\"), NOT the fieldSelector format (\"metadata.uid\"). Currently supported paths:\n  - object.metadata.uid\n  - object.metadata.namespace\n\nhexStart and hexEnd are single-quoted CEL string literals with a '0x' prefix, defining the inclusive lower and exclusive upper bounds over the 64-bit FNV-1a hash space. The full range is [0x0, 0x10000000000000000), where the exclusive upper bound equals 2^64.\n\nExamples:\n  2-shard split:\n    shard 0: shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')\n    shard 1: shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')\n  4-shard split:\n    shard 0: shardRange(object.metadata.uid, '0x0000000000000000', '0x4000000000000000')\n    shard 1: shardRange(object.metadata.uid, '0x4000000000000000', '0x8000000000000000')\n    shard 2: shardRange(object.metadata.uid, '0x8000000000000000', '0xc000000000000000')\n    shard 3: shardRange(object.metadata.uid, '0xc000000000000000', '0x10000000000000000')\n\nThis is an alpha field and requires enabling the ShardedListAndWatch feature gate.",
+            "schema": {
+              "type": "string",
+              "uniqueItems": true
+            }
+          },
+          {
             "name": "timeoutSeconds",
             "in": "query",
             "description": "Timeout for the list/watch call. This limits the duration of the call, regardless of any activity or inactivity.",
@@ -2201,17 +2210,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainList"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceList"
                 }
               },
               "application/json;stream=watch": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainList"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceList"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainList"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceList"
                 }
               }
             }
@@ -2221,15 +2230,15 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "post": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "create a RuleChain",
-        "operationId": "createRuleChain",
+        "description": "create a RuleSequence",
+        "operationId": "createRuleSequence",
         "parameters": [
           {
             "name": "dryRun",
@@ -2263,12 +2272,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
               }
             },
             "application/yaml": {
               "schema": {
-                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
               }
             }
           },
@@ -2280,12 +2289,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2295,12 +2304,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2310,12 +2319,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2325,15 +2334,15 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "delete": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "delete collection of RuleChain",
-        "operationId": "deletecollectionRuleChain",
+        "description": "delete collection of RuleSequence",
+        "operationId": "deletecollectionRuleSequence",
         "parameters": [
           {
             "name": "continue",
@@ -2444,6 +2453,15 @@
             }
           },
           {
+            "name": "shardSelector",
+            "in": "query",
+            "description": "shardSelector restricts the list of returned objects using a CEL-based shard selector expression. The format uses the shardRange() function combined with || (logical OR) to specify one or more hash ranges:\n\n  shardRange(object.metadata.uid, '0x0', '0x8000000000000000')\n  shardRange(object.metadata.uid, '0x0', '0x8000000000000000') || shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')\n\nField paths use CEL-style object-rooted syntax (e.g. \"object.metadata.uid\"), NOT the fieldSelector format (\"metadata.uid\"). Currently supported paths:\n  - object.metadata.uid\n  - object.metadata.namespace\n\nhexStart and hexEnd are single-quoted CEL string literals with a '0x' prefix, defining the inclusive lower and exclusive upper bounds over the 64-bit FNV-1a hash space. The full range is [0x0, 0x10000000000000000), where the exclusive upper bound equals 2^64.\n\nExamples:\n  2-shard split:\n    shard 0: shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')\n    shard 1: shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')\n  4-shard split:\n    shard 0: shardRange(object.metadata.uid, '0x0000000000000000', '0x4000000000000000')\n    shard 1: shardRange(object.metadata.uid, '0x4000000000000000', '0x8000000000000000')\n    shard 2: shardRange(object.metadata.uid, '0x8000000000000000', '0xc000000000000000')\n    shard 3: shardRange(object.metadata.uid, '0xc000000000000000', '0x10000000000000000')\n\nThis is an alpha field and requires enabling the ShardedListAndWatch feature gate.",
+            "schema": {
+              "type": "string",
+              "uniqueItems": true
+            }
+          },
+          {
             "name": "timeoutSeconds",
             "in": "query",
             "description": "Timeout for the list/watch call. This limits the duration of the call, regardless of any activity or inactivity.",
@@ -2474,7 +2492,7 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "parameters": [
@@ -2499,25 +2517,25 @@
         }
       ]
     },
-    "/apis/rules.alerting.grafana.app/v0alpha1/namespaces/{namespace}/rulechains/{name}": {
+    "/apis/rules.alerting.grafana.app/v0alpha1/namespaces/{namespace}/rulesequences/{name}": {
       "get": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "read the specified RuleChain",
-        "operationId": "getRuleChain",
+        "description": "read the specified RuleSequence",
+        "operationId": "getRuleSequence",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2527,15 +2545,15 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "put": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "replace the specified RuleChain",
-        "operationId": "replaceRuleChain",
+        "description": "replace the specified RuleSequence",
+        "operationId": "replaceRuleSequence",
         "parameters": [
           {
             "name": "dryRun",
@@ -2569,12 +2587,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
               }
             },
             "application/yaml": {
               "schema": {
-                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
               }
             }
           },
@@ -2586,12 +2604,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2601,12 +2619,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2616,15 +2634,15 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "delete": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "delete a RuleChain",
-        "operationId": "deleteRuleChain",
+        "description": "delete a RuleSequence",
+        "operationId": "deleteRuleSequence",
         "parameters": [
           {
             "name": "dryRun",
@@ -2708,15 +2726,15 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "patch": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "partially update the specified RuleChain",
-        "operationId": "updateRuleChain",
+        "description": "partially update the specified RuleSequence",
+        "operationId": "updateRuleSequence",
         "parameters": [
           {
             "name": "dryRun",
@@ -2786,12 +2804,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2801,12 +2819,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2816,14 +2834,14 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "parameters": [
         {
           "name": "name",
           "in": "path",
-          "description": "name of the RuleChain",
+          "description": "name of the RuleSequence",
           "required": true,
           "schema": {
             "type": "string",
@@ -2851,25 +2869,25 @@
         }
       ]
     },
-    "/apis/rules.alerting.grafana.app/v0alpha1/namespaces/{namespace}/rulechains/{name}/status": {
+    "/apis/rules.alerting.grafana.app/v0alpha1/namespaces/{namespace}/rulesequences/{name}/status": {
       "get": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "read status of the specified RuleChain",
-        "operationId": "getRuleChainStatus",
+        "description": "read status of the specified RuleSequence",
+        "operationId": "getRuleSequenceStatus",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2879,15 +2897,15 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "put": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "replace status of the specified RuleChain",
-        "operationId": "replaceRuleChainStatus",
+        "description": "replace status of the specified RuleSequence",
+        "operationId": "replaceRuleSequenceStatus",
         "parameters": [
           {
             "name": "dryRun",
@@ -2921,12 +2939,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
               }
             },
             "application/yaml": {
               "schema": {
-                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
               }
             }
           },
@@ -2938,12 +2956,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2953,12 +2971,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -2968,15 +2986,15 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "patch": {
         "tags": [
-          "RuleChain"
+          "RuleSequence"
         ],
-        "description": "partially update status of the specified RuleChain",
-        "operationId": "updateRuleChainStatus",
+        "description": "partially update status of the specified RuleSequence",
+        "operationId": "updateRuleSequenceStatus",
         "parameters": [
           {
             "name": "dryRun",
@@ -3046,12 +3064,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -3061,12 +3079,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               },
               "application/yaml": {
                 "schema": {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               }
             }
@@ -3076,14 +3094,14 @@
         "x-kubernetes-group-version-kind": {
           "group": "rules.alerting.grafana.app",
           "version": "v0alpha1",
-          "kind": "RuleChain"
+          "kind": "RuleSequence"
         }
       },
       "parameters": [
         {
           "name": "name",
           "in": "path",
-          "description": "name of the RuleChain",
+          "description": "name of the RuleSequence",
           "required": true,
           "schema": {
             "type": "string",
@@ -3759,7 +3777,7 @@
       "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RecordingRuleTemplateString": {
         "type": "string"
       },
-      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain": {
+      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence": {
         "type": "object",
         "required": [
           "kind",
@@ -3785,33 +3803,33 @@
             ]
           },
           "spec": {
-            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainSpec"
+            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceSpec"
           },
           "status": {
-            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainStatus"
+            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceStatus"
           }
         },
         "x-kubernetes-group-version-kind": [
           {
             "group": "rules.alerting.grafana.app",
-            "kind": "RuleChain",
+            "kind": "RuleSequence",
             "version": "v0alpha1"
           }
         ]
       },
-      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainIntervalTrigger": {
+      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceIntervalTrigger": {
         "type": "object",
         "required": [
           "interval"
         ],
         "properties": {
           "interval": {
-            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainPromDuration"
+            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequencePromDuration"
           }
         },
         "additionalProperties": false
       },
-      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainList": {
+      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceList": {
         "type": "object",
         "required": [
           "metadata",
@@ -3828,7 +3846,7 @@
               "default": {},
               "allOf": [
                 {
-                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChain"
+                  "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequence"
                 }
               ]
             }
@@ -3849,12 +3867,12 @@
         "x-kubernetes-group-version-kind": [
           {
             "group": "rules.alerting.grafana.app",
-            "kind": "RuleChainList",
+            "kind": "RuleSequenceList",
             "version": "v0alpha1"
           }
         ]
       },
-      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainOperatorState": {
+      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceOperatorState": {
         "type": "object",
         "required": [
           "lastEvaluation",
@@ -3886,30 +3904,30 @@
         },
         "additionalProperties": false
       },
-      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainPromDuration": {
+      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequencePromDuration": {
         "type": "string",
         "pattern": "^((([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?|0)$",
         "not": {
           "pattern": "hmuµn"
         }
       },
-      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainRuleRef": {
+      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceRuleRef": {
         "type": "object",
         "required": [
           "uid"
         ],
         "properties": {
           "uid": {
-            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainRuleUID"
+            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceRuleUID"
           }
         },
         "additionalProperties": false
       },
-      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainRuleUID": {
+      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceRuleUID": {
         "type": "string",
         "pattern": "^[a-zA-Z0-9_-]+$"
       },
-      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainSpec": {
+      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceSpec": {
         "type": "object",
         "required": [
           "trigger",
@@ -3919,23 +3937,23 @@
           "alertingRules": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainRuleRef"
+              "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceRuleRef"
             }
           },
           "recordingRules": {
             "description": "Non-empty constraint is enforced in Go admission validation (validator.go),\nnot in CUE. Using [...#RuleRef] instead of [#RuleRef, ...#RuleRef] avoids\na codegen bug where the CUE default generates invalid Go/TS defaults\n(empty-UID RuleRef in Go, `uid: \u003cnil\u003e` in TypeScript).",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainRuleRef"
+              "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceRuleRef"
             }
           },
           "trigger": {
-            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainIntervalTrigger"
+            "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceIntervalTrigger"
           }
         },
         "additionalProperties": false
       },
-      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainStatus": {
+      "com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceStatus": {
         "type": "object",
         "properties": {
           "additionalFields": {
@@ -3947,7 +3965,7 @@
             "description": "operatorStates is a map of operator ID to operator state evaluations.\nAny operator which consumes this kind SHOULD add its state evaluation information to this field.",
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleChainOperatorState"
+              "$ref": "#/components/schemas/com.github.grafana.grafana.apps.alerting.rules.pkg.apis.alerting.v0alpha1.RuleSequenceOperatorState"
             }
           }
         },
