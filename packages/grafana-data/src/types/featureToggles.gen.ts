@@ -154,6 +154,11 @@ export interface FeatureToggles {
   */
   provisioningExport?: boolean;
   /**
+  * Render the README.md of a Git Sync provisioned folder inline below its dashboards list
+  * @default false
+  */
+  provisioningReadmes?: boolean;
+  /**
   * Start an additional https handler and write kubectl options
   * @default false
   */
@@ -500,12 +505,12 @@ export interface FeatureToggles {
   scopeApi?: boolean;
   /**
   * Use the single node endpoint for the scope api. This is used to fetch the scope parent node.
-  * @default false
+  * @default true
   */
   useScopeSingleNodeEndpoint?: boolean;
   /**
   * Makes the frontend use the 'names' param for fetching multiple scope nodes at once
-  * @default false
+  * @default true
   */
   useMultipleScopeNodesEndpoint?: boolean;
   /**

@@ -253,6 +253,14 @@ var (
 			Generate:        Generate{LegacyGo: true, LegacyFrontend: true},
 		},
 		{
+			Name:        "provisioningReadmes",
+			Description: "Render the README.md of a Git Sync provisioned folder inline below its dashboards list",
+			Stage:       FeatureStageExperimental,
+			Owner:       grafanaAppPlatformSquad,
+			Expression:  "false",
+			Generate:    Generate{LegacyFrontend: true},
+		},
+		{
 			Name:            "grafanaAPIServerEnsureKubectlAccess",
 			Description:     "Start an additional https handler and write kubectl options",
 			Stage:           FeatureStageExperimental,
@@ -878,18 +886,18 @@ var (
 		{
 			Name:         "useScopeSingleNodeEndpoint",
 			Description:  "Use the single node endpoint for the scope api. This is used to fetch the scope parent node.",
-			Stage:        FeatureStageExperimental,
+			Stage:        FeatureStagePublicPreview,
 			Owner:        grafanaOperatorExperienceSquad,
-			Expression:   "false",
+			Expression:   "true",
 			Generate:     Generate{LegacyFrontend: true},
 			HideFromDocs: true,
 		},
 		{
 			Name:         "useMultipleScopeNodesEndpoint",
 			Description:  "Makes the frontend use the 'names' param for fetching multiple scope nodes at once",
-			Stage:        FeatureStageExperimental,
+			Stage:        FeatureStagePublicPreview,
 			Owner:        grafanaOperatorExperienceSquad,
-			Expression:   "false",
+			Expression:   "true",
 			Generate:     Generate{LegacyFrontend: true},
 			HideFromDocs: true,
 		},
@@ -2798,6 +2806,15 @@ var (
 			HideFromDocs: true,
 			Expression:   "false",
 			Generate:     Generate{LegacyFrontend: true, React: true}, // legacy frontend for old naming convention
+		},
+		{
+			Name:         "grafana.scenesFlickeringFix",
+			Description:  "Prevents flickering in dashboards",
+			Stage:        FeatureStageExperimental,
+			Owner:        grafanaDashboardsSquad,
+			HideFromDocs: true,
+			Expression:   "false",
+			Generate:     Generate{React: true},
 		},
 		{
 			Name:            "datasourcesApiServerEnableHealthEndpointFrontend",
