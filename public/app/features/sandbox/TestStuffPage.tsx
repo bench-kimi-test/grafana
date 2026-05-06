@@ -1,9 +1,15 @@
 /* eslint-disable @grafana/i18n/no-untranslated-strings */
-import { type NavModelItem } from '@grafana/data';
+import { useState } from 'react';
+
+import { PageLayoutType, type NavModelItem } from '@grafana/data';
 import { usePluginLinks } from '@grafana/runtime';
-import { Button, LinkButton, Stack, Text } from '@grafana/ui';
+import { Button, LinkButton, RadioButtonGroup, Stack, Text } from '@grafana/ui';
 import { Page } from 'app/core/components/Page/Page';
 import { useAppNotification } from 'app/core/copy/appNotification';
+
+const layoutOptions = Object.entries(PageLayoutType)
+  .filter((entry): entry is [string, PageLayoutType] => typeof entry[0] === 'string' && typeof entry[1] === 'number')
+  .map(([label, value]) => ({ label, value }));
 
 export const TestStuffPage = () => {
   const node: NavModelItem = {
@@ -15,10 +21,12 @@ export const TestStuffPage = () => {
   };
 
   const notifyApp = useAppNotification();
+  const [layout, setLayout] = useState(PageLayoutType.Standard);
 
   return (
-    <Page navModel={{ node: node, main: node }}>
+    <Page layout={layout} navModel={{ node: node, main: node }}>
       <LinkToBasicApp extensionPointId="grafana/sandbox/testing" />
+
       <Text variant="h5">Application notifications (toasts) testing</Text>
       <Stack>
         <Button onClick={() => notifyApp.success('Success toast', 'some more text goes here')} variant="primary">
@@ -36,6 +44,11 @@ export const TestStuffPage = () => {
         >
           Error
         </Button>
+      </Stack>
+
+      <Text variant="h5">Page layout testing</Text>
+      <Stack>
+        <RadioButtonGroup options={layoutOptions} value={layout} onChange={setLayout} />
       </Stack>
     </Page>
   );
